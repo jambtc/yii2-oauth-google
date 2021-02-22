@@ -47,24 +47,25 @@ class google extends \yii\base\Widget
                     // Display the user details
                     console.log('[oauth] GOOGLE userData', user);
                     $.ajax({
-              				url:'$this->auth_url',
-              				type: 'GET',
-              				data:{
-              					'email'		: user.email,
-              					'first_name': user.given_name,
-              					'last_name'	: user.family_name,
-              					'id'		: user.id,
-              					'username'	: user.name,
-              					'picture'	: user.picture,
-              				},
-              				dataType: 'json',
-              				success:function(data){
-                        var auth2 = gapi.auth2.getAuthInstance();
-              					console.log('[oauth] Google Saved userdata',data);
-                        if (data.success === true){
-                          auth2.signOut().then(function () {
-                            console.log(['Google signout']);
-                          });
+              			url:'$this->auth_url',
+              			type: 'GET',
+              			data:{
+              				'email'		: user.email,
+              				'first_name': user.given_name,
+              				'last_name'	: user.family_name,
+              				'id'		: user.id,
+              				'username'	: user.name,
+              				'picture'	: user.picture,
+              			},
+              			dataType: 'json',
+              			success:function(data){
+							var auth2 = gapi.auth2.getAuthInstance();
+              				console.log('[oauth] Google Check Autorization Response',data);
+							
+							if (data.success === false){
+								auth2.signOut().then(function () {
+								console.log(['Google account is now signout']);
+							});
                         }
               				},
               				error: function(j){
